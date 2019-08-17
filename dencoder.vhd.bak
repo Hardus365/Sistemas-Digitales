@@ -1,0 +1,16 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_ARITH.ALL;
+
+entity dencoder_letra is
+	port( entrada: in  std_logic_vector(5 downto 0);
+			Output: out std_logic_vector(2 downto 0));
+end dencoder_letra;
+
+ARCHITECTURE conf OF dencoder_letra IS
+    BEGIN
+      Output<="000" when entrada<="000000" else--0
+				  "001" when entrada<="000001" else--A
+				  "010" when entrada<="000010" else--B
+				  "011" when entrada<="000100";--C
+END conf;

@@ -1,0 +1,35 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity teclado is
+	port(entrada: in  std_logic_vector(3 downto 0);
+			entradavcc: out std_logic_vector(3 downto 0);
+			salida: out std_logic_vector(7 downto 0));
+end teclado;
+
+ARCHITECTURE confi OF teclado IS
+type estado is (Ta, Tb, Tc, Td); 
+signal y : estado;
+begin 
+process (clock, RESET)
+	begin
+	if RESET = '1' then y<= Ta;
+	elsif clock' event and clock = '1' then 
+	case y is 
+		when Ta => if entrada='0000' then y<= Tb; else y<=Ta; end if;
+		when Tb => if entrada='0000' then y<= Tc; else y<=Tb; end if;
+		when Tc => if entrada='0000' then y<= Td; else y<=Tc; end if;
+		when Td => if entrada='0000' then y<= Ta; else y<=Td; end if;
+	end case;
+	end if;
+end process;
+process (y)
+	begin
+	case y is 
+		when Ta => entradavcc<="1000";salida = "entradavcc&entrada";
+		when Tb => entradavcc<="0100";salida = "entradavcc&entrada";
+		when Tc => entradavcc<="0010";salida = "entradavcc&entrada";
+		when Td => entradavcc<="0001";salida = "entradavcc&entrada";
+		end case;
+end process;
+end confi;

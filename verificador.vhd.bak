@@ -1,0 +1,18 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_ARITH.ALL;
+
+entity verificador is
+	port( entrada: in  std_logic_vector(3 downto 0);
+			ocupado: std_logic_vector(3 downto 0);
+			Output: out std_logic);
+end verificador;
+architecture Behavioral of verificador is
+begin 
+process
+begin
+	if (entrada = ocupado ) then Output<='1';
+	else Output<='1';
+	end if;
+end process;
+end Behavioral;

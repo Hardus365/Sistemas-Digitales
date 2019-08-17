@@ -1,0 +1,37 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity controlador is
+	Port ( clock, RESET, start, or_teclado, valido, sensor, flanco, temp, error: in STD_LOGIC;
+		enD1, enD2, enD3, enD4, enR5, enError, enTiempo, ST, alarma, puerta, Rerror, Rtiempo: out STD_LOGIC);
+end controlador;
+architecture solucion of controlador is 
+type estado is (Ta, Tb, Tc, Td, Te, Tf, Tg, Th, Ti, Tj, Tk, Tl, Tm, Tn, Tp, Tq); 
+signal y <= estado
+ begin 
+ process (clock, RESET)
+	begin 
+	if RESET = '1' then y<= Ta;
+	elsif clock event' and clock = '1' then 
+	case y is 
+		when Ta => if start='1' then y<= Tb; else y<= Ta; end if;
+		when Tb => if start='0' then y<= Tc; else y<= Tb; end if;
+		when Tc => if or_teclado= '1' then y<= Td: else y<= Tc; end if;
+		when Td => if or_teclado= '0' then y<= Te: else y<= Td; end if;
+		when Te => if or_teclado= '1' then y<= Tf: else y<= Te; end if;
+		when Tf => if or_teclado= '0' then y<= Tg: else y<= Tf; end if;
+		when Tg => if or_teclado= '1' then y<= Th: else y<= Tg; end if;
+		when Th => if or_teclado= '0' then y<= Ti: else y<= Th; end if;
+		when Ti => if or_teclado= '1' then y<= Tj: else y<= Ti; end if;
+		when Tj => if or_teclado= '0' then y<= Tk: else y<= Tj; end if;
+		when Tk => if valido= '1' then y<= Tm: else y<= Tl; end if;
+		when Tl => if error= '0' then y<= Tc: else y<= Tn; end if;
+		when Tm => if sensor= '0' then y<= Tc; 
+						elsif (sensor='1' and flanco='0' and temp= '1') then y<= Tp; end if;
+		when Tn => if (flanco= '0' and temp= '1') then y<= Tc: else y<= Tn; end if;
+		when Tp => Tq;
+		when Tq => if (flanco= '0' and temp= '1') then y<= Tc: else y<= Tq; end if;
+	end case;
+	end if;
+	end process;
+	end solucion;
